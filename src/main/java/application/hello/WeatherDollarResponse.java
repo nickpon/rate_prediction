@@ -2,7 +2,7 @@ package application.hello;
 
 import application.hello.presentation.Example;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +48,8 @@ public class WeatherDollarResponse {
     }
 
     private void getData() throws IOException, ParseException {
-        ArrayList<Pair<Double, Long>> pairsRateList = ratesHandler.getValues();
-        for (Pair<Double, Long> pair : pairsRateList) {
+        ArrayList<AbstractMap.SimpleEntry<Double, Long>> pairsRateList = ratesHandler.getValues();
+        for (AbstractMap.SimpleEntry<Double, Long> pair : pairsRateList) {
             String url = "https://api.darksky.net/forecast/" + key + "/" + latitude + "," +
                     longitude + "," + pair.getValue() +
                     "?units=auto&exclude=currently,hourly,flags";

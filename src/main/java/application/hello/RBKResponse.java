@@ -2,7 +2,7 @@ package application.hello;
 
 import application.hello.DAO.Entity.Quote;
 import application.hello.DAO.Repository.QuoteCrudRepository;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,14 +42,14 @@ public class RBKResponse {
         return maxRate;
     }
 
-    public ArrayList<Pair<Double, Long>> getValues() throws ParseException {
-        ArrayList<Pair<Double, Long>> values = new ArrayList<>(30);
+    public ArrayList<AbstractMap.SimpleEntry<Double, Long>> getValues() throws ParseException {
+        ArrayList<AbstractMap.SimpleEntry<Double, Long>> values = new ArrayList<>(30);
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT-5:00"));
         for (String line1 : getResponse()) {
             String[] line = line1.split(",");
             Date tempDate = new SimpleDateFormat("yyyy-MM-dd").parse(line[1]);
             cal.setTime(tempDate);
-            Pair<Double, Long> params = new Pair <> (Double.parseDouble(line[line.length - 1]), cal.getTimeInMillis() / 1000L);
+            AbstractMap.SimpleEntry<Double, Long> params = new AbstractMap.SimpleEntry <> (Double.parseDouble(line[line.length - 1]), cal.getTimeInMillis() / 1000L);
             values.add(params);
         }
         return values;
