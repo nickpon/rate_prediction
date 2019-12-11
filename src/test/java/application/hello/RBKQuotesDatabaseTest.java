@@ -36,6 +36,6 @@ public class RBKQuotesDatabaseTest {
         Quote q = new Quote(12.0, Calendar.getInstance().getTime());
         Optional<Quote> opt = Optional.of(q);
         when(quoteCrudRepository.findByDate(anyString())).thenReturn(opt);
-        assertEquals(Optional.ofNullable(responser.getMaxQuoteMonth()), 12.0);
+        assertEquals(Optional.ofNullable(responser.getMaxQuoteMonth()), Optional.ofNullable(12.0));
     }
 }

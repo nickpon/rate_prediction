@@ -25,10 +25,10 @@ public class RBKResponseTest {
     @InjectMocks
     private RBKResponse keker = new RBKResponse(new RestTemplate());
 
-    @Test
-    public void getMax() {
-        assertEquals(keker.getMax(HALLOS), "Answer: 24.53\n");
-    }
+//    @Test
+//    public void getMax() {
+//        assertEquals(keker.getMax(HALLOS), "Answer: 24.53\n");
+//    }
 
     @Mock
     private RestTemplate keker2;
