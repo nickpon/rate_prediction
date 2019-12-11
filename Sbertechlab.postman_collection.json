@@ -31,12 +31,12 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/weather?temperature=2.03",
+					"raw": "http://localhost:8091/weather?temperature=2.03",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8091",
 					"path": [
 						"weather"
 					],
@@ -80,12 +80,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/request",
+					"raw": "http://localhost:8091/request",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8091",
 					"path": [
 						"request"
 					]
@@ -118,12 +118,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/",
+					"raw": "http://localhost:8091/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8091",
 					"path": [
 						""
 					]
