@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "00325011-03b6-49d2-b66f-9ddded13a11c",
+		"name": "Sbertechlab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Weather",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0652227-6493-4ed1-b4fc-acb76630f778",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Not negative\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.value).to.be.above(-0.01);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/weather?temperature=2.03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"weather"
+					],
+					"query": [
+						{
+							"key": "temperature",
+							"value": "2.03"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c76c8d37-30b2-4a9e-9d15-4452d5954b95",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Less than 100\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.value).to.be.below(100);",
+							"});",
+							"",
+							"pm.test(\"Biger than 0\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.value).to.be.above(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/request",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hello",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "acfcae31-1b96-4b84-93ef-1ac7fa0e219a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Greetings from Spring Boot!!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
