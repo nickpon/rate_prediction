@@ -79,10 +79,7 @@ public class WeatherDollarResponse {
             up += (tempList.get(i) - getMean(tempList)) * (rateList.get(i) - getMean(rateList));
             down += Math.pow(tempList.get(i) - getMean(tempList), 2);
         }
-        if (Math.abs(down - 0.00000001) < 0){
-            return 99999.;
-        }
-        return up / down;
+        return (Math.abs(down - 0.00000001) < 0)? 99999.0: up / (Math.abs(down)+0.00000001);
     }
 
     private Double findA(ArrayList<Double> tempList, ArrayList<Double> rateList, Double b) {
