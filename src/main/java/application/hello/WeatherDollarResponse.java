@@ -69,6 +69,9 @@ public class WeatherDollarResponse {
             sumArr += elem;
             elementCount++;
         }
+        if (Math.abs(elementCount - 0.00000001) < 0){
+            return 99999.;
+        }
         return sumArr / elementCount;
     }
 
@@ -78,6 +81,9 @@ public class WeatherDollarResponse {
         for (int i = 0; i < tempList.size(); i++) {
             up += (tempList.get(i) - getMean(tempList)) * (rateList.get(i) - getMean(rateList));
             down += Math.pow(tempList.get(i) - getMean(tempList), 2);
+        }
+        if (Math.abs(down - 0.00000001) < 0){
+            return 99999.;
         }
         return up / down;
     }

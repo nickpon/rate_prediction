@@ -68,6 +68,7 @@ public class RBKResponse {
         return rate.map(Quote::getQuote);
     }
 
+    @Transactional
     public Double getMaxQuoteMonth() {
         Optional<Double> maxQuote = getQuoteByDate(Calendar.getInstance().getTime());
         if (maxQuote.isPresent()) {

@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name="Quote")
 public class Quote {
 
-    private final static DateFormat dateFormater = new SimpleDateFormat("yyyy/MM/dd");
+//    private final static DateFormat dateFormater = new SimpleDateFormat("yyyy/MM/dd");
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -22,11 +22,11 @@ public class Quote {
 
     public Quote(Double quote, Date date) {
         this.quote = quote;
-        this.date = dateFormater.format(date);
+        this.date = new SimpleDateFormat("yyyy/MM/dd").format(date);
     }
 
     public static String dateFormat(Date date) {
-        return dateFormater.format(date);
+        return new SimpleDateFormat("yyyy/MM/dd").format(date);
     }
 
     public Double getQuote() {
