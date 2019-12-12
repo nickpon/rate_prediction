@@ -69,10 +69,7 @@ public class WeatherDollarResponse {
             sumArr += elem;
             elementCount++;
         }
-        if (Math.abs(elementCount - 0.00000001) < 0){
-            return 99999.;
-        }
-        return sumArr / elementCount;
+        return (Math.abs(elementCount - 0.00000001) < 0)? 99999.0: sumArr/(Math.abs(elementCount)+0.00000001);
     }
 
     private Double findB(ArrayList<Double> tempList, ArrayList<Double> rateList) {
