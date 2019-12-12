@@ -27,7 +27,7 @@ public class WeatherDollarController {
 //    @ResponseBody
     public Response index(@RequestParam("temperature") Double temperature) throws IOException, ParseException {
         Response response = new Response();
-        response.value = responser.predict(temperature);
+        response.setValue(responser.predict(temperature));
         return response;
     }
 }
