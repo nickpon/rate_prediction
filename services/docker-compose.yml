@@ -1,0 +1,37 @@
+version: '3'
+services:
+  weather:
+    image: "weather:2.1.6.RELEASE"
+    ports:
+      - "8081:8081"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+  prediction:
+    image: "prediction:2.1.6.RELEASE"
+    ports:
+      - "8082:8082"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+  rbc:
+    image: "rbc:2.1.6.RELEASE"
+    ports:
+      - "8083:8083"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+  hello:
+    image: "hello:2.1.6.RELEASE"
+    ports:
+      - "8084:8084"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.8
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
