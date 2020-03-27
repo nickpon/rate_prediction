@@ -3,4 +3,4 @@ RUN mkdir prediction
 COPY target/prediction-2.1.6.RELEASE.jar /prediction
 WORKDIR /prediction
 EXPOSE 8082
-CMD ["java", "-jar", "prediction-2.1.6.RELEASE.jar"]
+CMD ["java", "-jar", "prediction-2.1.6.RELEASE.jar", "http://rbc:8083/rbc/array", "http://weather:8081/weather/array"]

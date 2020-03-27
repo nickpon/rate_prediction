@@ -16,6 +16,8 @@ import java.util.*;
 @SpringBootApplication
 @Component
 public class PredictionResponse {
+    private static String rbcURL;
+    private static String weatherURL;
     private ArrayList<Double> tempList;
     private ArrayList<Double> rateList;
 
@@ -26,6 +28,8 @@ public class PredictionResponse {
     }
 
     public static void main(String[] args) {
+        rbcURL = args[0];
+        weatherURL = args[1];
         SpringApplication.run(PredictionResponse.class, args);
     }
 
@@ -55,11 +59,11 @@ public class PredictionResponse {
         RestTemplate restTemplate = new RestTemplate();
 
         ArrayList<AbstractMap.SimpleEntry<Double, Long>> ratesDates = getResponseByURL(
-                "http://rbc:8083/rbc/array", restTemplate
+                rbcURL, restTemplate
         );
 
         ArrayList<AbstractMap.SimpleEntry<Double, Long>> temperatureDates = getResponseByURL(
-                "http://weather:8081/weather/array", restTemplate
+                weatherURL, restTemplate
         );
 
         getRatesTemperature(ratesDates, temperatureDates);
