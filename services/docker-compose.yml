@@ -21,14 +21,38 @@ services:
     networks:
       vpcbr:
         ipv4_address: 10.5.0.7
-  hello:
-    image: "hello:2.1.6.RELEASE"
+#  hello:
+#    image: "hello:2.1.6.RELEASE"
+#    ports:
+#      - "8084:8084"
+#    networks:
+#      vpcbr:
+#        ipv4_address: 10.5.0.8
+
+  dbpostgresql:
+    image: postgres
+    restart: always
     ports:
-      - "8084:8084"
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: postgresadmin
+      POSTGRES_PASSWORD: postgres
     networks:
       vpcbr:
-        ipv4_address: 10.5.0.8
-
+        ipv4_address: 10.5.0.9
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    depends_on:
+      - dbpostgresql
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mydomain.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.10
 networks:
   vpcbr:
     driver: bridge
