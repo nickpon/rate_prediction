@@ -45,7 +45,7 @@ fi
 # Docker building.
 
 cd rbc
-mvn package
+mvn package -DskipTests
 docker build -t rbc:2.1.6.RELEASE .
 cd ..
 
