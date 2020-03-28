@@ -100,6 +100,7 @@ public class RBCResponse {
     @Transactional
     Double getMaxQuoteMonth() {
         Optional<Double> maxQuote = getQuoteByDate(Calendar.getInstance().getTime());
+        System.out.println(maxQuote);
         if (maxQuote.isPresent()) {
             System.out.println("Database");
             return maxQuote.get();

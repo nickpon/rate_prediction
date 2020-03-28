@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS rate (
 
     id integer,
-    rate double precision,
+    quote double precision,
     date varchar(50)
 )
