@@ -9,7 +9,13 @@ import java.util.Date;
 @Table(name="Quote")
 public class Quote {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(
+            name = "id",
+            unique = true,
+            updatable = false,
+            nullable = false
+    )
     private Long id;
     private Double quote;
     private String date;
@@ -29,5 +35,3 @@ public class Quote {
         return quote;
     }
 }
-
-
