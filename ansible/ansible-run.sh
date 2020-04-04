@@ -13,7 +13,7 @@ do
   docker rm "$line"
 done
 
-docker ps -a --format {{.ID}}::{{.Image}} | grep 'prediction:2.1.6.LOCAL' | perl -lne 'print "$1" if /(.{12})(::)/' | while IFS='' read -r line
+docker ps -a --format {{.ID}}::{{.Image}} | grep 'prediction:2.1.6.WEB' | perl -lne 'print "$1" if /(.{12})(::)/' | while IFS='' read -r line
 do
   docker rm "$line"
 done
@@ -66,10 +66,10 @@ then
    docker rmi rbc:2.1.6.RELEASE -f
 fi
 
-if docker images --format '{{.Repository}}:{{.Tag}}' | grep 'prediction:2.1.6.LOCAL'
+if docker images --format '{{.Repository}}:{{.Tag}}' | grep 'prediction:2.1.6.WEB'
 then
-   echo "Deleting prediction:2.1.6.LOCAL image.";
-   docker rmi prediction:2.1.6.LOCAL -f
+   echo "Deleting prediction:2.1.6.WEB image.";
+   docker rmi prediction:2.1.6.WEB -f
 fi
 
 if docker images --format '{{.Repository}}:{{.Tag}}' | grep 'hello:2.1.6.RELEASE'
@@ -81,28 +81,35 @@ fi
 
 # Docker building.
 
-cd rbc || exit
+cd ../services/rbc || exit
+rm -rf rbc:2.1.6.RELEASE.tar
 rm -rf target/
-# FIXME: extrenal tests are broken
 mvn package -DskipTests
 docker build -t rbc:2.1.6.RELEASE .
+docker save rbc:2.1.6.RELEASE > rbc:2.1.6.RELEASE.tar
 
 cd ../weather || exit
+rm -rf weather:2.1.6.RELEASE.tar
 rm -rf target/
 mvn package
 docker build -t weather:2.1.6.RELEASE .
+docker save weather:2.1.6.RELEASE > weather:2.1.6.RELEASE.tar
 
 cd ../prediction || exit
+rm -rf prediction:2.1.6.RELEASE.tar
 rm -rf target/
 mvn package
-docker build -t prediction:2.1.6.LOCAL  -f Dockerfile.local .
+docker build -t prediction:2.1.6.WEB  -f Dockerfile.web .
+docker save prediction:2.1.6.WEB > prediction:2.1.6.WEB.tar
 
 cd ../hello || exit
+rm -rf hello:2.1.6.RELEASE.tar
 rm -rf target/
 mvn package
 docker build -t hello:2.1.6.RELEASE .
-
+docker save hello:2.1.6.RELEASE > hello:2.1.6.RELEASE.tar
 
 # Running app.
 
-docker-compose  -f ../docker-compose-local.yml up
+cd ../../ansible/ || exit
+ansible-playbook deploy.yml --ask-vault-pass -v

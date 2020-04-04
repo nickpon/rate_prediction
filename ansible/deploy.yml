@@ -1,0 +1,74 @@
+-
+  hosts: hello-weather-prediction
+  remote_user: "{{ hello_weather_prediction_user }}"
+  become: yes
+  vars:
+    ansible_become_user: root
+    ansible_become_password: "{{ hello_weather_prediction_password }}"
+  vars_files:
+    - ./sectrets.yml
+  tasks:
+
+    - name: "Make (if exist recreate it) directory (nickpon) for to store files."
+      shell: "rm -rf ./edu/nickpon && mkdir -p ./edu/nickpon"
+
+    - name: "Stop && remove all docker containers."
+      shell: "sudo docker ps -a -q | xargs -n 1 -P 8 -I {} sudo docker stop {} && sudo docker ps -a -q | xargs -n 1 -P 8 -I {} sudo docker rm {}"
+
+    - name: "Remove all docker images."
+      shell: "sudo docker images -q | xargs -n 1 -P 8 -I {} sudo docker rmi {}"
+
+    - name: "Copy docker-compose file for hello-weather-prediction services."
+      copy: "src=./docker-compose-hello-weather-prediction.yml dest=edu/nickpon/ owner={{ hello_weather_prediction_user }} mode=7777"
+
+    - name: "Copy image for hello-service."
+      copy: "src=../services/hello/hello:2.1.6.RELEASE.tar dest=edu/nickpon/ owner={{ hello_weather_prediction_user }} mode=7777"
+
+    - name: "Load image for hello-service."
+      shell: "sudo docker load -i ./edu/nickpon/hello:2.1.6.RELEASE.tar"
+
+    - name: "Copy image for weather-service."
+      copy: "src=../services/weather/weather:2.1.6.RELEASE.tar dest=edu/nickpon/ owner={{ hello_weather_prediction_user }} mode=7777"
+
+    - name: "Load image for weather-service."
+      shell: "sudo docker load -i ./edu/nickpon/weather:2.1.6.RELEASE.tar"
+
+    - name: "Copy image for prediction-service."
+      copy: "src=../services/prediction/prediction:2.1.6.WEB.tar dest=edu/nickpon/ owner={{ hello_weather_prediction_user }} mode=7777"
+
+    - name: "Load image for prediction-service."
+      shell: "sudo docker load -i ./edu/nickpon/prediction:2.1.6.WEB.tar"
+
+    - name: "Run hello-weather-prediction services server via docker-compose."
+      shell: "sudo docker-compose -f ./edu/nickpon/docker-compose-hello-weather-prediction.yml up -d"
+
+-
+  hosts: rbc
+  remote_user: "{{ rbc_user }}"
+  become: yes
+  vars:
+    - ansible_become_user: root
+    - ansible_become_password: "{{ rbc_password }}"
+  vars_files:
+    - ./sectrets.yml
+  tasks:
+    - name: "Make (if exist recreate it) directory (nickpon) for to store files."
+      shell: "rm -rf ./edu/nickpon && mkdir -p ./edu/nickpon"
+
+    - name: "Stop && remove all docker containers."
+      shell: "sudo docker ps -a -q | xargs -n 1 -P 8 -I {} sudo docker stop {} && sudo docker ps -a -q | xargs -n 1 -P 8 -I {} sudo docker rm {}"
+
+    - name: "Remove all docker images."
+      shell: "sudo docker images -q | xargs -n 1 -P 8 -I {} sudo docker rmi {}"
+
+    - name: "Copy docker-compose file for rbc service."
+      copy: "src=./docker-compose-rbc.yml dest=edu/nickpon/ owner={{ rbc_user }} mode=7777"
+
+    - name: "Copy image for rbc-service."
+      copy: "src=../services/rbc/rbc:2.1.6.RELEASE.tar dest=edu/nickpon/ owner={{ rbc_user }} mode=7777"
+
+    - name: "Load image for rbc-service."
+      shell: "sudo docker load -i ./edu/nickpon/rbc:2.1.6.RELEASE.tar"
+
+    - name: "Run rbc services server via docker-compose."
+      shell: "sudo docker-compose -f ./edu/nickpon/docker-compose-rbc.yml up -d"

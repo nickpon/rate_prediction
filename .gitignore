@@ -1,0 +1,14 @@
+.idea/
+mamkin_hacker_2.iml
+services/hello/hello:2.1.6.RELEASE.tar
+services/hello/target/
+services/prediction/prediction:2.1.6.RELEASE.tar
+services/prediction/target/
+services/rbc/rbc:2.1.6.RELEASE.tar
+services/rbc/target/
+services/weather/target/
+services/weather/weather:2.1.6.RELEASE.tar
+/ansible/id_rsa
+/ansible/id_rsa.pub
+/services/prediction/prediction:2.1.6.WEB.tar
+/services/prediction/prediction:2.1.6.LOCAL.tar
