@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rbc
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rbc
+  template:
+    metadata:
+      name: rbc
+      labels:
+        app: rbc
+    spec:
+      containers:
+        - name: rbc
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres_password
+          image: rbc:2.1.6.RELEASE
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8083
+              name: rbc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rbc
+spec:
+  ports:
+    - port: 8083
+      targetPort: 8083
+  selector:
+    app: rbc
+  type: LoadBalancer

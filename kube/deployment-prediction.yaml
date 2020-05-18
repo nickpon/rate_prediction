@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prediction
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prediction
+  template:
+    metadata:
+      name: prediction
+      labels:
+        app: prediction
+    spec:
+      containers:
+        - name: prediction
+          env:
+          image: prediction:2.1.6.LOCAL
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prediction
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+  selector:
+    app: prediction
+  type: LoadBalancer

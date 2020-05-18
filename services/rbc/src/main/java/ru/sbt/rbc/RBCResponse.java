@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -40,11 +41,27 @@ public class RBCResponse {
     }
 
     public String[] getResponse() {
-        String url = "http://export.rbc.ru/free/selt.0/free.fcgi?period=DAILY&tickers=USD000000TOD&separator=," +
-                "&data_format=BROWSER&lastdays=";
-        ResponseEntity<String> response = restTemplate.getForEntity(url + "30", String.class);
-        assert (response.getStatusCode().equals(HttpStatus.OK));
-        return Objects.requireNonNull(response.getBody()).split("\n");
+        try {
+            String url = "http://export.rbc.ru/free/selt.0/free.fcgi?period=DAILY&tickers=USD000000TOD&separator=," +
+                    "&data_format=BROWSER&lastdays=";
+            ResponseEntity<String> response = restTemplate.getForEntity(url + "30", String.class);
+            assert (response.getStatusCode().equals(HttpStatus.OK));
+            return Objects.requireNonNull(response.getBody()).split("\n");
+        } catch (Exception e) {
+            // In case rbc service doesn't response.
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            String[] output = new String[14];
+            for (int i = 0; i < 14; i++) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                c.add(Calendar.DATE, -1);
+                String dateString = dateFormat.format(c.getTime());
+                String rate = Double.toString((Math.random())*(90-70)+70);
+                output[i] = "RUB," + dateString + "," + rate + "\n";
+            }
+            return output;
+        }
     }
 
     @SuppressWarnings("WrapperTypeMayBePrimitive")
@@ -99,6 +116,7 @@ public class RBCResponse {
 
     @Transactional
     Double getMaxQuoteMonth() {
+//        return 0.0;
         Optional<Double> maxQuote = getQuoteByDate(Calendar.getInstance().getTime());
         System.out.println(maxQuote);
         if (maxQuote.isPresent()) {

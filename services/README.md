@@ -1,42 +1,59 @@
-# 1, 2, 3, 5 лабораторные работы.
-## Пономаренко Николай Дмитриевич, 692
+# Local run by docker-compose.
 
-1. Запуск приложения в чистой среде.
-
-    Удаляются все предыдущие койтейнеры для данных сервисов,
-    удаляются все предыдущие images для данных сервисов,
-    заново делается чистый mvn package для каждого сервиса,
-    заново делается docker build для каждого сервиса,
-    в конце делается docker-compose up.
+1. Running the app in a clean environment.
+    
+    All previous containers and images for these services
+    are deleted, a clean `mvn package` is performed for each
+    service, a new `docker build` is made for each service and,
+    at the end, `docker-compose up` is done.
     
     `bash docker-starter.sh`.
 
-2. Проверка работоспособности приложения.
+2. Health-check of the applications.
 
-    2.1. Сервис hello.
+    2.1. Service hello.
     
-    `http://176.119.156.76:8084/` - выдаёт "Hello, user! This seems to be initial page!"
+    `http://localhost:8084/` - just outputs "Hello, user! This
+    seems to be initial page!".
     
-    2.2. Сервис rbc.
+    It ought to be mentioned that for this very service Grafana
+    with Prometheus is up. Logs can be easily obtained on
+    `http://localhost:8084/actuator`,
+    `http://localhost:8084/actuator/prometheus`. Prometheus is
+    working on `http://localhost:9090`. To work with Grahana, some
+    should go to `http://localhost:3000`.
     
-    `http://194.87.146.4:8083/rbc/` - максимальный курс доллара США 
-    по отношению к рублю за 30 рабочих дней. Результат кэшируется в БД.
+    2.2. Service rbc.
     
-    `http://194.87.146.4:8083/rbc/array` - вывод массива 'курс=UNIXTime' за 30 дней, разделённых запятыми.
+    `http://localhost:8083/rbc` - max US dollar exchange rate in
+    relation to ruble for 30 business days. The results are
+    cached in the database (Postgres).
     
-    2.3 Сервис weather.
+    `http://localhost:8083/rbc/array` - outputs array
+    'rate=UNIXTime' for 30 days, separated by commas.
     
-    `http://176.119.156.76:8081/weather?time=<your_UNIXTime>` - выводит температуру в Москве в `<your_UNIXTime>` (например, `1584651600`) момент времени.
+    2.3 Service weather.
     
-    `http://176.119.156.76:8081/weather/array` - вывод массива 'температура в Москве=UNIXTime' за 50 дней, разделённых запятыми.
+    `http://localhost:8081/weather?time=<your_UNIXTime>` -
+    outputs the temperature in Moscow in `<your_UNIXTime>`
+    (e.g. `1584651600`).
     
-    2.4 Сервис prediction.
+    `http://localhost:8081/weather/array` - outputs array
+    'temperature in Moscow=UNIXTime' for 50 days, separated
+    by commas.
     
-    `http://176.119.156.76:8082/prediction?temperature=<your_temperature>` - вывод предсказание курса доллара США по
-    отношению к курсу рубля относительно температуры `<your_temperature>` (например, `2.71`). 
-    Для этого делается следующее: от сервиса rbc берётся массив 'курс=UNIXTime' за 30 дней,
-    от сервиса weather берётся массив 'температура в Москве=UNIXTime' за 50 дней 
-    (так как биржа не работает каждый день, а погода измеряется каждый день),
-    находятся соответствия 'курс=температура в Москве' по UNIXTime, с помощью метода наименьших
-    квадратов строится прямая, задаваемая коэффициентами A и B, 
-    далее предсказание считается по следующей формуле: `A + <your_temperature> * B`.
+    2.4 Service prediction.
+    
+    `http://localhost:8082/prediction?temperature=<your_temperature>` -
+    outputs prediction of the US dollar exchange rate in relation
+    to ruble relative to the temperature `<your_temperature>`
+    (e.g. `2.71`). To do this, the following is performed: the
+    'rate=UNIXTime' array for 30 days is taken from the rbc
+    service, the 'temperature in Moscow=UNIXTime' array for 50
+    days is taken from the weather service (since the stock
+    doesn't work every day but the weather is measured daily),
+    the correspondences 'rate=temperature in Moscow' by UNIXTime
+    are found using Least Square Method (a straight line is
+    constructed using the coefficients A and B, then the
+    prediction is calculated using the following formula:
+    `A + <your_temperature> * B`).
